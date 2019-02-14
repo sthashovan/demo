@@ -18,6 +18,7 @@ let kittens = [
 	' '];
 
 let ids=[];
+let link = [];
 
 axios.request({
 	url: 'http://app.nettv.com.np/api/v3/users/channel-categories?with=channels',
@@ -33,30 +34,23 @@ axios.request({
 	}
 	setTimeout(function(){
 		kittens = arr;
-		ids = arr1;
-		console.log(arr1);
+		ids=arr1; //
 	},600)
 });
 
-// setTimeout(function(){
-//     axios.request({
-//         url: 'http://app.nettv.com.np/api/v3/channels',
-//         method: 'get',
-//         headers: {Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmaXJlYmFzZSI6ImNzc2RtTlNGNXlxWW86QVBBOTFiRlgwOU9vVlFHRjAyZ1NFTUhsZU9WWUVNZXpVVFpXSUd3OHp6NnA2b0hnMG54c1k0OWNpZDlNTSIsInN1YiI6NjQ0NTYzLCJpc3MiOiJodHRwczovL2FwcC5uZXR0di5jb20ubnAvYXBpL3YzL2xvZ2luIiwiaWF0IjoxNTQ4MzA4NTA3LCJleHAiOjE3MzE2MzA4NTA3LCJuYmYiOjE1NDgzMDg1MDcsImp0aSI6IlVESXpjbzQ0ekxJQzg3QXAifQ.QRqOU2e-l6s92qTCkRp2SdXVJJ3HEdEANOtqaUvrhAE'}
-//     })
-//         .then(res => {
-//             let chLink = [];
-//             for(let i=0; i<6; i++){
-//                 arr.push(res.data[0].channels[i].channel_name);
-//                 arr1.push(res.data[0].channels[i].channel_id);
-//             }
-//             setTimeout(function(){
-//                 kittens = arr;
-//                 ids = arr1;
-//                 console.log(arr1);
-//             },600)
-//         });
-// },605)
+setTimeout(function () {
+    for(let i = 0; i< 6; i++){
+        axios.request({
+            url: 'http://app.nettv.com.np/api/v3/channels/'+ids[i]+'/playable',
+            method: 'get',
+            params: {"with": "hd"},
+            headers: {Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmaXJlYmFzZSI6ImNzc2RtTlNGNXlxWW86QVBBOTFiRlgwOU9vVlFHRjAyZ1NFTUhsZU9WWUVNZXpVVFpXSUd3OHp6NnA2b0hnMG54c1k0OWNpZDlNTSIsInN1YiI6NjQ0NTYzLCJpc3MiOiJodHRwczovL2FwcC5uZXR0di5jb20ubnAvYXBpL3YzL2xvZ2luIiwiaWF0IjoxNTQ4MzA4NTA3LCJleHAiOjE3MzE2MzA4NTA3LCJuYmYiOjE1NDgzMDg1MDcsImp0aSI6IlVESXpjbzQ0ekxJQzg3QXAifQ.QRqOU2e-l6s92qTCkRp2SdXVJJ3HEdEANOtqaUvrhAE'}
+        })
+            .then(res => {
+                link.push(res.data.link);
+            });
+    }
+},1000);
 
 const AppBase = kind({
 	name: 'App',
@@ -93,7 +87,7 @@ const AppBase = kind({
 	render: ({index, kitten, onNavigate, onSelectKitten, ...rest}) => (
 		<ActivityPanels {...rest} index={index} onSelectBreadcrumb={onNavigate}>
 			<List onSelectKitten={onSelectKitten}>{kittens}</List>
-			<Detail name={kittens[kitten]} id={ids[kitten]}/>
+			<Detail name={kittens[kitten]} links={link[kitten]} />
 		</ActivityPanels>
 	)
 });

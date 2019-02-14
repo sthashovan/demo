@@ -11,20 +11,16 @@ const DetailBase = kind({
         name: PropTypes.string,
     },
 
-    computed:{
-        test:(props)=>{
-            console.log(props);
-        }
-    },
 
-    render: ({name, ...rest}) => (
+    render: ({name, links, ...rest}) => (
         <Panel {...rest}>
             <Header title={name} />
             <ReactJWPlayer
                 playerId='jw-player'
                 // licenseKey='9p9+6yFethst8ePGF6tnl/5wUGPqvwKIQzZlo00IaHA='
                 playerScript='https://content.jwplatform.com/libraries/ZNX3JbCh.js'
-                file='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+                // file='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+                file={links}
             />,
         </Panel>
     )
